@@ -43,35 +43,47 @@ const randomNumbers = [
   298,
 ];
 
-// Array.from({ length: 100 }, () =>
-//   Math.floor(Math.random() * 100)
-// );
-
-// Create a WebSocket server
 const wss = new WebSocket.Server({ port: 8080 });
-
-// Function to send random numbers to connected clients
 const sendRandomNumbers = (ws) => {
   const interval = setInterval(() => {
     const randomNumber =
       randomNumbers[Math.floor(Math.random() * randomNumbers.length)];
-    ws.send(randomNumber.toString());
+    const test = {
+      OI: 0,
+      OIChngPer: 0,
+      ttv: 0,
+      atp: 0,
+      chng: 0,
+      chngPer: 0,
+      close: 0,
+      high: 0,
+      lcl: 0,
+      low: 0,
+      ltp: randomNumber,
+      ltq: 0,
+      ltt: 0,
+      open: 0,
+      symbol: 0,
+      ucl: 0,
+      vol: 0,
+      yHigh: 0,
+      yLow: 0,
+      askPrice: 0,
+      bidPrice: 0,
+    };
+    ws.send(JSON.stringify(test));
   }, 1000);
 
-  // Stop sending numbers when the connection is closed
   ws.on("close", () => {
     clearInterval(interval);
   });
 };
 
-// Listen for connections
 wss.on("connection", (ws) => {
   console.log("Client connected");
 
-  // Send random numbers to the connected client
   sendRandomNumbers(ws);
 
-  // Handle client disconnection
   ws.on("close", () => {
     console.log("Client disconnected");
   });
